@@ -159,6 +159,100 @@ class Bishop < Piece
 
 end
 
+class Knight < Piece
+	attr_accessor :name
+	def initialize color, position
+		@name = color + "N"
+		super @name, position
+	end
+
+	def is_a_possible_move position
+		if calculate_new_position position
+			return true
+		end
+		return false
+	end
+
+	def calculate_new_position position
+		if position[0] < @position[0]
+			if go_north position
+				return true
+			end
+		else
+			if go_south position
+				return true
+			end
+		end
+		return false
+	end
+
+	def go_north position
+		i = 1
+		j = 2
+		#binding.pry
+		while i <= 2
+			if position[1] < @position[1]
+				if go_west position, [@position[0]-i, @position[1]], j
+					return true
+				end
+			else
+				if go_east position, [@position[0]-i, @position[1]], j
+					return true
+				end
+			end
+			j -= 1
+			i += 1
+		end
+		return false
+	end
+
+	def go_south position
+		i = 1
+		j = 2
+		#binding.pry
+		while i <= 2
+			if position[1] > @position[1]
+				if go_east position, [@position[0]+i, @position[1]], j
+					return true
+				end
+			else
+				if go_west position, [@position[0]+i, @position[1]], j
+					return true
+				end
+			end
+			j -= 1
+			i += 1
+		end
+		return false
+	end
+
+	def go_west position, current_position, j
+		#binding.pry
+		if check_position position, [current_position[0], current_position[1]-j]
+			return true
+		end
+		return false
+	end
+
+	def go_east position, current_position, j
+		#binding.pry
+		if check_position position, [current_position[0], current_position[1]+j]
+			return true
+		end
+		return false
+	end
+
+	def check_position position, current_position
+		#binding.pry
+		if position == current_position
+			return true
+		else
+			return false
+		end
+	end
+
+end
+
 class Queen < Piece
 	attr_accessor :name
 	def initialize color, position
@@ -177,64 +271,6 @@ class King < Piece
 	def initialize color, position
 		@name = color + "K"
 		super @name, position
-	end
-
-end
-
-class Knight < Piece
-	attr_accessor :name
-	def initialize color, position
-		@name = color + "N"
-		super @name, position
-	end
-
-	def is_a_posible_move position
-
-	end
-
-	def calculate_new_position position
-		if position[0] < @position[0]
-			go_north
-		else
-			go_south
-		end
-	end
-
-	def go_north position
-		if position[1] < @position[1]
-			i = 0
-			while i < 2
-				go_west
-			end
-		else
-			i = 0
-			while i < 2
-				go_east
-			end
-		end
-	end
-
-	def go_south position
-		if position[1] > @position[1]
-			i = 1
-			while i <= 2
-				@position[1] += i
-				go_east
-			end
-		else
-			i = 1
-			while i <= 2
-				go_west
-			end
-		end
-	end
-
-	def go_west position
-
-	end
-
-	def go_east position
-
 	end
 
 end
@@ -289,10 +325,22 @@ end
 # puts r1.is_a_possible_move [0,2]
 # puts r2.is_a_possible_move [0,2]
 
-b1 = Bishop.new("b", [2, 3])
-b2 = Bishop.new("w", [4, 1])
-b = Board.new [b1, b2]
+# b1 = Bishop.new("b", [2, 3])
+# b2 = Bishop.new("w", [4, 1])
 
-puts b1.is_a_possible_move [5,6]
-puts b2.is_a_possible_move [0,2]
+n1 = Knight.new("b", [4, 3])
+n2 = Knight.new("w", [1, 0])
+
+b = Board.new [n1, n2]
+
+
+# puts n1.is_a_possible_move [2,2]
+# puts n1.is_a_possible_move [2,4]
+# puts n1.is_a_possible_move [3,2]
+# puts n1.is_a_possible_move [3,4]
+# puts n1.is_a_possible_move [5,1]
+# puts n1.is_a_possible_move [5,5]
+# puts n1.is_a_possible_move [6,2]
+# puts n1.is_a_possible_move [6,4]
+# puts n2.is_a_possible_move [0,2]
 b.show_board
