@@ -135,7 +135,7 @@ class Bishop < Piece
 	end
 
 	def validate_position position, op_x, op_y
-		pos = @position
+		pos = @position.clone
 		validated = false
 		while !validated && !out_of_board(pos[0], pos[1])
 			pos[0] = calculate_new_position op_x, pos[0]
@@ -225,28 +225,6 @@ class Knight < Piece
 
 end
 
-class Queen < Piece
-	attr_accessor :name
-	def initialize color, position
-		@name = color + "Q"
-		super @name, position
-	end
-
-	def is_a_possible_move position
-
-	end
-
-end
-
-class King < Piece
-	attr_accessor :name
-	def initialize color, position
-		@name = color + "K"
-		super @name, position
-	end
-
-end
-
 class Pawn < Piece
 	attr_accessor :name
 	def initialize color, position
@@ -310,6 +288,38 @@ class Pawn < Piece
 
 end
 
+class Queen < Piece
+	attr_accessor :name
+	def initialize color, position
+		@color = color
+		@name = color + "Q"
+		@position = position
+		super @name, @position
+	end
+
+	def is_a_possible_move position
+		b = Bishop.new @color, @position
+		r = Rook.new @color, @position
+		if r.is_a_possible_move(position) || b.is_a_possible_move(position)
+			return true
+		else
+			return false
+		end
+	end
+
+end
+
+class King < Piece
+	attr_accessor :name
+	def initialize color, position
+		@name = color + "K"
+		super @name, position
+	end
+
+end
+
+
+
 # puts ParserPosition.new.parser("a2")
 
 # bR1 = Rook.new("b", [0, 0])
@@ -322,7 +332,7 @@ end
 # wB1 = Bishop.new("w", [0, 1])
 # wB2 = Bishop.new("w", [0, 1])
 
-# r1 = Rook.new("b", [0, 1])
+# r1 = Rook.new("b", [5, 4])
 # r2 = Rook.new("w", [3, 5])
 # puts r1.is_a_possible_move [0,2]
 # puts r2.is_a_possible_move [0,2]
@@ -330,15 +340,18 @@ end
 # b1 = Bishop.new("b", [2, 3])
 # b2 = Bishop.new("w", [4, 1])
 
-n1 = Knight.new("b", [4, 3])
-n2 = Knight.new("w", [1, 0])
+# n1 = Knight.new("b", [4, 3])
+# n2 = Knight.new("w", [1, 0])
 
-p1 = Pawn.new("b", [1, 4])
-p2 = Pawn.new("w", [6, 2])
-p3 = Pawn.new("b", [2, 0])
-p4 = Pawn.new("w", [4, 6])
+# p1 = Pawn.new("b", [1, 4])
+# p2 = Pawn.new("w", [6, 2])
+# p3 = Pawn.new("b", [2, 0])
+# p4 = Pawn.new("w", [4, 6])
 
-b = Board.new [p1, p2, p3, p4]
+q1 = Queen.new("b", [1, 1])
+q2 = Queen.new("w", [5, 4])
+
+b = Board.new [q1, q2]
 
 # puts n1.is_a_possible_move [2,2]
 # puts n1.is_a_possible_move [2,4]
@@ -350,15 +363,20 @@ b = Board.new [p1, p2, p3, p4]
 # puts n1.is_a_possible_move [6,4]
 # puts n2.is_a_possible_move [0,2]
 
-puts p1.is_a_possible_move [2,4]
-puts p1.is_a_possible_move [3,4]
-puts p2.is_a_possible_move [5,2]
-puts p2.is_a_possible_move [4,2]
-puts p3.is_a_possible_move [3,0]
-puts p3.is_a_possible_move [1,0]
-puts p4.is_a_possible_move [2,6]
-puts p4.is_a_possible_move [3,6]
+# puts p1.is_a_possible_move [2,4]
+# puts p1.is_a_possible_move [3,4]
+# puts p2.is_a_possible_move [5,2]
+# puts p2.is_a_possible_move [4,2]
+# puts p3.is_a_possible_move [3,0]
+# puts p3.is_a_possible_move [1,0]
+# puts p4.is_a_possible_move [2,6]
+# puts p4.is_a_possible_move [3,6]
 
-
+puts q1.is_a_possible_move [2,2]
+puts q1.is_a_possible_move [1,6]
+puts q1.is_a_possible_move [3,2]
+puts q2.is_a_possible_move [4,6]
+puts q2.is_a_possible_move [3,6]
+puts q2.is_a_possible_move [5,1]
 
 b.show_board
