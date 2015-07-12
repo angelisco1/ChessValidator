@@ -87,9 +87,9 @@ class Rook < Piece
 
 	def is_a_possible_move position
 		if @position[0] == position[0] || @position[1] == position[1]
-			true
+			return true
 		else
-			false
+			return false
 		end
 	end
 
@@ -104,16 +104,15 @@ class Bishop < Piece
 
 	def is_a_possible_move position
 		if @position[0] == @position[1] && position[0] == position[1]
-			true
+			return true
 		else
-			check_position position
+			return check_position position
 		end
 	end
 
 	def check_position position
 		x = position[0]
 		y = position[1]
-		#binding.pry
 		op_x = check_operators @position[0], x
 		op_y = check_operators @position[1], y
 		validate_position position, op_x, op_y
@@ -121,9 +120,9 @@ class Bishop < Piece
 
 	def out_of_board x, y
 		if x >= 0 && x < 8 && y >= 0 && y < 8
-			false
+			return false
 		else
-			true
+			return true
 		end
 	end
 
@@ -137,7 +136,6 @@ class Bishop < Piece
 
 	def validate_position position, op_x, op_y
 		pos = @position
-		#binding.pry
 		validated = false
 		while !validated && !out_of_board(pos[0], pos[1])
 			pos[0] = calculate_new_position op_x, pos[0]
@@ -167,29 +165,16 @@ class Knight < Piece
 	end
 
 	def is_a_possible_move position
-		if calculate_new_position position
-			return true
-		end
-		return false
-	end
-
-	def calculate_new_position position
 		if position[0] < @position[0]
-			if go_north position
-				return true
-			end
+			return go_north position
 		else
-			if go_south position
-				return true
-			end
+			return go_south position
 		end
-		return false
 	end
 
 	def go_north position
 		i = 1
 		j = 2
-		#binding.pry
 		while i <= 2
 			if position[1] < @position[1]
 				if go_west position, [@position[0]-i, @position[1]], j
@@ -227,28 +212,15 @@ class Knight < Piece
 	end
 
 	def go_west position, current_position, j
-		#binding.pry
-		if check_position position, [current_position[0], current_position[1]-j]
-			return true
-		end
-		return false
+		check_position position, [current_position[0], current_position[1]-j]
 	end
 
 	def go_east position, current_position, j
-		#binding.pry
-		if check_position position, [current_position[0], current_position[1]+j]
-			return true
-		end
-		return false
+		check_position position, [current_position[0], current_position[1]+j]
 	end
 
 	def check_position position, current_position
-		#binding.pry
-		if position == current_position
-			return true
-		else
-			return false
-		end
+		position == current_position
 	end
 
 end
@@ -334,13 +306,13 @@ n2 = Knight.new("w", [1, 0])
 b = Board.new [n1, n2]
 
 
-# puts n1.is_a_possible_move [2,2]
-# puts n1.is_a_possible_move [2,4]
-# puts n1.is_a_possible_move [3,2]
-# puts n1.is_a_possible_move [3,4]
-# puts n1.is_a_possible_move [5,1]
-# puts n1.is_a_possible_move [5,5]
-# puts n1.is_a_possible_move [6,2]
-# puts n1.is_a_possible_move [6,4]
-# puts n2.is_a_possible_move [0,2]
+puts n1.is_a_possible_move [2,2]
+puts n1.is_a_possible_move [2,4]
+puts n1.is_a_possible_move [3,2]
+puts n1.is_a_possible_move [3,4]
+puts n1.is_a_possible_move [5,1]
+puts n1.is_a_possible_move [5,5]
+puts n1.is_a_possible_move [6,2]
+puts n1.is_a_possible_move [6,4]
+puts n2.is_a_possible_move [0,2]
 b.show_board
