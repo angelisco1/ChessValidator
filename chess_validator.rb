@@ -341,75 +341,48 @@ class King < Piece
 end
 
 
+bP1 = Pawn.new("b", [1, 0])
+bP2 = Pawn.new("b", [1, 1])
+bP3 = Pawn.new("b", [1, 2])
+bP4 = Pawn.new("b", [1, 3])
+bP5 = Pawn.new("b", [1, 4])
+bP6 = Pawn.new("b", [1, 5])
+bP7 = Pawn.new("b", [1, 6])
+bP8 = Pawn.new("b", [1, 7])
 
-# puts ParserPosition.new.parser("a2")
+wP1 = Pawn.new("w", [6, 0])
+wP2 = Pawn.new("w", [6, 1])
+wP3 = Pawn.new("w", [6, 2])
+wP4 = Pawn.new("w", [6, 3])
+wP5 = Pawn.new("w", [6, 4])
+wP6 = Pawn.new("w", [6, 5])
+wP7 = Pawn.new("w", [6, 6])
+wP8 = Pawn.new("w", [6, 7])
 
-# bR1 = Rook.new("b", [0, 0])
-# bR2 = Rook.new("b", [0, 1])
-# wR1 = Rook.new("w", [0, 1])
-# wR2 = Rook.new("w", [0, 1])
+bR1 = Rook.new("b", [7, 0])
+bR2 = Rook.new("b", [7, 7])
+wR1 = Rook.new("w", [0, 0])
+wR2 = Rook.new("w", [0, 7])
 
-# bB1 = Bishop.new("b", [0, 0])
-# bB2 = Bishop.new("b", [0, 1])
-# wB1 = Bishop.new("w", [0, 1])
-# wB2 = Bishop.new("w", [0, 1])
+bN1 = Knight.new("b", [7, 1])
+bN2 = Knight.new("b", [7, 6])
+wN1 = Knight.new("w", [0, 1])
+wN2 = Knight.new("w", [0, 6])
 
-# r1 = Rook.new("b", [5, 4])
-# r2 = Rook.new("w", [3, 5])
-# puts r1.is_a_possible_move [0,2]
-# puts r2.is_a_possible_move [0,2]
+bB1 = Bishop.new("b", [7, 2])
+bB2 = Bishop.new("b", [7, 5])
+wB1 = Bishop.new("w", [0, 2])
+wB2 = Bishop.new("w", [0, 5])
 
-# b1 = Bishop.new("b", [2, 3])
-# b2 = Bishop.new("w", [4, 1])
+bQ1 = Queen.new("b", [7, 3])
+bK1 = King.new("b", [7, 4])
 
-# n1 = Knight.new("b", [4, 3])
-# n2 = Knight.new("w", [1, 0])
+wQ1 = Queen.new("w", [0, 3])
+wK1 = King.new("w", [0, 4])
 
-# p1 = Pawn.new("b", [1, 4])
-# p2 = Pawn.new("w", [6, 2])
-# p3 = Pawn.new("b", [2, 0])
-# p4 = Pawn.new("w", [4, 6])
-
-# q1 = Queen.new("b", [1, 1])
-# q2 = Queen.new("w", [5, 4])
-
-k1 = King.new("b", [0, 2])
-k2 = King.new("w", [5, 2])
-
-b = Board.new [k1, k2]
-
-# puts n1.is_a_possible_move [2,2]
-# puts n1.is_a_possible_move [2,4]
-# puts n1.is_a_possible_move [3,2]
-# puts n1.is_a_possible_move [3,4]
-# puts n1.is_a_possible_move [5,1]
-# puts n1.is_a_possible_move [5,5]
-# puts n1.is_a_possible_move [6,2]
-# puts n1.is_a_possible_move [6,4]
-# puts n2.is_a_possible_move [0,2]
-
-# puts p1.is_a_possible_move [2,4]
-# puts p1.is_a_possible_move [3,4]
-# puts p2.is_a_possible_move [5,2]
-# puts p2.is_a_possible_move [4,2]
-# puts p3.is_a_possible_move [3,0]
-# puts p3.is_a_possible_move [1,0]
-# puts p4.is_a_possible_move [2,6]
-# puts p4.is_a_possible_move [3,6]
-
-# puts q1.is_a_possible_move [2,2]
-# puts q1.is_a_possible_move [1,6]
-# puts q1.is_a_possible_move [3,2]
-# puts q2.is_a_possible_move [4,6]
-# puts q2.is_a_possible_move [3,6]
-# puts q2.is_a_possible_move [5,1]
-
-puts k1.is_a_possible_move [0,1]
-puts k1.is_a_possible_move [1,3]
-puts k1.is_a_possible_move [1,2]
-puts k1.is_a_possible_move [5,1]
-puts k2.is_a_possible_move [4,3]
-puts k2.is_a_possible_move [4,0]
-puts k2.is_a_possible_move [6,1]
+b = Board.new [bP1, bP2, bP3, bP4, bP5, bP6, bP7, bP8, 
+				wP1, wP2, wP3, wP4, wP5, wP6, wP7, wP8,
+				bR1, bR2, wR1, wR2, bN1, bN2, wN1, wN2,
+				bB1, bB2, wB1, wB2, bQ1, bK1, wQ1, wK1]
 
 b.show_board
