@@ -252,31 +252,61 @@ class Pawn < Piece
 	def initialize color, position
 		@name = color + "P"
 		super @name, position
-		@firs_move = is_first_move position
+		@color = color
+		@firs_move = is_first_move
 	end
 
-	def is_first_move position
-		if position[1] == 6 && color == "w"
-			true
-		elsif position[1] == 1 && color == "b"
-			true
+	def is_first_move
+		if @position[0] == 6 && @color == "w"
+			return true
+		elsif @position[0] == 1 && @color == "b"
+			return true
 		else
-			false
+			return false
 		end
 	end
 
-	# def is_a_possible_move position
-	# 	if !@first_move
-	# 		return check_position position
-	# 	else
-	# 		false
-	# 	end
-			
-	# end
+	def is_a_possible_move position
+		if position[1] == @position[1]
+			return check_move position
+		else
+			return false
+		end			
+	end
 
-	# def check_position position
-	# 	if 
-	# end
+	def check_move position
+		if @color == "w"
+			return check_move_white_piece position
+		else
+			return check_move_black_piece position
+		end
+	end
+
+	def check_move_white_piece position
+		if check_position @position[0]-1, position[0]
+			return true
+		else
+			if @firs_move
+				return check_position @position[0]-2, position[0]
+			end
+		end
+		return false
+	end
+
+	def check_move_black_piece position
+		if check_position @position[0]+1, position[0]
+			return true
+		else
+			if @firs_move
+				return check_position @position[0]+2, position[0]
+			end
+		end
+		return false
+	end
+
+	def check_position y1, y2
+		y1 == y2
+	end
 
 end
 
@@ -303,16 +333,32 @@ end
 n1 = Knight.new("b", [4, 3])
 n2 = Knight.new("w", [1, 0])
 
-b = Board.new [n1, n2]
+p1 = Pawn.new("b", [1, 4])
+p2 = Pawn.new("w", [6, 2])
+p3 = Pawn.new("b", [2, 0])
+p4 = Pawn.new("w", [4, 6])
+
+b = Board.new [p1, p2, p3, p4]
+
+# puts n1.is_a_possible_move [2,2]
+# puts n1.is_a_possible_move [2,4]
+# puts n1.is_a_possible_move [3,2]
+# puts n1.is_a_possible_move [3,4]
+# puts n1.is_a_possible_move [5,1]
+# puts n1.is_a_possible_move [5,5]
+# puts n1.is_a_possible_move [6,2]
+# puts n1.is_a_possible_move [6,4]
+# puts n2.is_a_possible_move [0,2]
+
+puts p1.is_a_possible_move [2,4]
+puts p1.is_a_possible_move [3,4]
+puts p2.is_a_possible_move [5,2]
+puts p2.is_a_possible_move [4,2]
+puts p3.is_a_possible_move [3,0]
+puts p3.is_a_possible_move [1,0]
+puts p4.is_a_possible_move [2,6]
+puts p4.is_a_possible_move [3,6]
 
 
-puts n1.is_a_possible_move [2,2]
-puts n1.is_a_possible_move [2,4]
-puts n1.is_a_possible_move [3,2]
-puts n1.is_a_possible_move [3,4]
-puts n1.is_a_possible_move [5,1]
-puts n1.is_a_possible_move [5,5]
-puts n1.is_a_possible_move [6,2]
-puts n1.is_a_possible_move [6,4]
-puts n2.is_a_possible_move [0,2]
+
 b.show_board
