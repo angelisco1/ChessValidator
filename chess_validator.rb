@@ -1,11 +1,12 @@
 require 'pry'
 
 class ParserPosition
+
 	def parser position
 		array_position = get_char position
 		x = parser_char array_position[0]
-		y = array_position[1]
-		return [x, y]
+		y = array_position[1].to_i
+		return [y-1, x] #Devolvemos y-1 porque el tablero empieza en 0 y devolvemos de la forma [y,x] porque estan cambiadas las posiciones 
 	end
 
 	def get_char position
@@ -32,9 +33,91 @@ class ParserPosition
 			return 7
 		end
 	end
+
+end
+
+class Validator
+
+	def initialize file, board
+		@file = file
+		@board = board
+		movements = load_file
+		results_array = check_movements movements
+		save_file convert_results_to_strings(results_array)
+	end
+
+	def convert_results_to_strings results
+		results_str = []
+		results.each do |result|
+			if result
+				results_str << "LEGAL"
+			else
+				results_str << "ILLEGAL"
+			end
+		end
+		return results_str
+	end
+
+
+	def check_movements movements
+		moves = movements.split("\n")
+		results = []
+		moves.each do |move|
+			results << convert_in_position(move)
+		end
+		return results
+	end
+
+	def convert_in_position move
+		positions = move.split(" ")
+		parsed_positions = parse_position positions
+		positions_to_check parsed_positions
+	end
+
+	def parse_position positions
+		parsed_positions = []
+		positions.each do |position|
+			parsed_positions.push(ParserPosition.new.parser position)
+		end
+		return parsed_positions
+	end
+
+	def positions_to_check positions
+		current_position = positions[0]
+		final_position = positions[1]
+		piece = get_piece current_position[0], current_position[1]
+		if piece
+			check_move piece, final_position
+		end
+	end
+
+	def check_move piece, position
+		piece.is_a_possible_move(position) && !@board.is_occupied(position)
+	end
+
+	def get_piece x, y
+		@board.board[x][y]
+	end
+
+	def load_file
+		IO.read @file
+	end
+
+	def save_file results
+		str = results_to_str results
+		IO.write("output.txt", str)
+	end
+
+	def results_to_str results
+		str = results.reduce("") do |memo, result|
+			memo += result +"\n"
+		end
+	end
+
 end
 
 class Board
+	attr_reader :board
 
 	def initialize pieces
 		@pieces = pieces
@@ -47,12 +130,10 @@ class Board
 		pieces.each do |piece|
 			@board[piece.position[0]][piece.position[1]] = piece
 		end
-		#binding.pry
 		return @board
 	end
 
 	def show_board
-		#binding.pry
 		@board.each do |array1|
 			array1.each do |array2|
 				if array2 != nil
@@ -64,6 +145,15 @@ class Board
 			puts ""
 		end
 	end
+
+	def is_occupied position
+		if @board[position[0]][position[1]] == nil
+			return false
+		else
+			return true
+		end
+	end
+
 end
 
 class Piece
@@ -75,11 +165,11 @@ class Piece
 		@position = position
 	end
 
-	
 end
 
 class Rook < Piece
 	attr_accessor :name
+
 	def initialize color, position
 		@name = color + "R"
 		super @name, position
@@ -97,6 +187,7 @@ end
 
 class Bishop < Piece
 	attr_accessor :name
+
 	def initialize color, position
 		@name = color + "B"
 		super @name, position
@@ -159,6 +250,7 @@ end
 
 class Knight < Piece
 	attr_accessor :name
+
 	def initialize color, position
 		@name = color + "N"
 		super @name, position
@@ -227,6 +319,7 @@ end
 
 class Pawn < Piece
 	attr_accessor :name
+
 	def initialize color, position
 		@name = color + "P"
 		super @name, position
@@ -290,6 +383,7 @@ end
 
 class Queen < Piece
 	attr_accessor :name
+
 	def initialize color, position
 		@color = color
 		@name = color + "Q"
@@ -311,6 +405,7 @@ end
 
 class King < Piece
 	attr_accessor :name
+
 	def initialize color, position
 		@name = color + "K"
 		super @name, position
@@ -385,4 +480,5 @@ b = Board.new [bP1, bP2, bP3, bP4, bP5, bP6, bP7, bP8,
 				bR1, bR2, wR1, wR2, bN1, bN2, wN1, wN2,
 				bB1, bB2, wB1, wB2, bQ1, bK1, wQ1, wK1]
 
-b.show_board
+
+Validator.new "input.txt", b
