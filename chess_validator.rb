@@ -316,6 +316,28 @@ class King < Piece
 		super @name, position
 	end
 
+	def is_a_possible_move position
+		if @position[0]+1 == position[0] && @position[1] == position[1]
+			return true
+		elsif @position[0]-1 == position[0] && @position[1] == position[1]
+			return true
+		elsif @position[0] == position[0] && @position[1]+1 == position[1]
+			return true
+		elsif @position[0] == position[0] && @position[1]-1 == position[1]
+			return true
+		elsif @position[0]+1 == position[0] && @position[1]+1 == position[1]
+			return true
+		elsif @position[0]+1 == position[0] && @position[1]-1 == position[1]
+			return true
+		elsif @position[0]-1 == position[0] && @position[1]-1 == position[1]
+			return true
+		elsif @position[0]-1 == position[0] && @position[1]+1 == position[1]
+			return true
+		else
+			return false
+		end
+	end
+
 end
 
 
@@ -348,10 +370,13 @@ end
 # p3 = Pawn.new("b", [2, 0])
 # p4 = Pawn.new("w", [4, 6])
 
-q1 = Queen.new("b", [1, 1])
-q2 = Queen.new("w", [5, 4])
+# q1 = Queen.new("b", [1, 1])
+# q2 = Queen.new("w", [5, 4])
 
-b = Board.new [q1, q2]
+k1 = King.new("b", [0, 2])
+k2 = King.new("w", [5, 2])
+
+b = Board.new [k1, k2]
 
 # puts n1.is_a_possible_move [2,2]
 # puts n1.is_a_possible_move [2,4]
@@ -372,11 +397,19 @@ b = Board.new [q1, q2]
 # puts p4.is_a_possible_move [2,6]
 # puts p4.is_a_possible_move [3,6]
 
-puts q1.is_a_possible_move [2,2]
-puts q1.is_a_possible_move [1,6]
-puts q1.is_a_possible_move [3,2]
-puts q2.is_a_possible_move [4,6]
-puts q2.is_a_possible_move [3,6]
-puts q2.is_a_possible_move [5,1]
+# puts q1.is_a_possible_move [2,2]
+# puts q1.is_a_possible_move [1,6]
+# puts q1.is_a_possible_move [3,2]
+# puts q2.is_a_possible_move [4,6]
+# puts q2.is_a_possible_move [3,6]
+# puts q2.is_a_possible_move [5,1]
+
+puts k1.is_a_possible_move [0,1]
+puts k1.is_a_possible_move [1,3]
+puts k1.is_a_possible_move [1,2]
+puts k1.is_a_possible_move [5,1]
+puts k2.is_a_possible_move [4,3]
+puts k2.is_a_possible_move [4,0]
+puts k2.is_a_possible_move [6,1]
 
 b.show_board
